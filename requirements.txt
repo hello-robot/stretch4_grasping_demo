@@ -1,0 +1,11 @@
+# General dependencies
+numpy
+opencv-python
+Pillow
+pyzmq
+
+# Molmo 2 dependencies
+requests
+transformers<5.0
+accelerate
+einops
