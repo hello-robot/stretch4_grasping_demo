@@ -280,12 +280,13 @@ def main():
                 if "pixel_values" in inputs:
                     inputs["pixel_values"] = inputs["pixel_values"].to(molmo_model.dtype)
 
-                output_ids = molmo_model.generate(
-                    **inputs,
-                    max_new_tokens=200,
-                    stop_strings=["<|endoftext|>"],
-                    tokenizer=molmo_proc.tokenizer
-                )
+                with torch.inference_mode():
+                    output_ids = molmo_model.generate(
+                        **inputs,
+                        max_new_tokens=200,
+                        stop_strings=["<|endoftext|>"],
+                        tokenizer=molmo_proc.tokenizer
+                    )
                 
                 generated_tokens = output_ids[0, inputs['input_ids'].size(1):]
                 generated_text = molmo_proc.tokenizer.decode(generated_tokens, skip_special_tokens=True)
