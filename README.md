@@ -6,7 +6,7 @@ Perception uses the [Molmo 2](https://github.com/allenai/molmo2) Vision-Language
 
 A finite state machine (FSM) consisting of a sequence of visual servoing behaviors controls the robot's motions. The behaviors use the segmentation mask output by SAM 2, the depth image from the wrist-mounted camera, and estimates of the gripper's fingertip frames of reference to decide how to move the robot.  
 
-The FSM behaviors use three control modes provided by [flying gripper control](https://github.com/hello-robot/stretch4_flying_gripper_control/):
+The FSM behaviors use three control modes provided by [flying gripper control](https://github.com/hello-robot/stretch4_flying_gripper/):
 
 * Mode 1: Gripper Frame Relative Motions
 * Mode 2: Gripper Frame Projected into the Base Frame Relative Motions
@@ -18,14 +18,48 @@ More details about the FSM and tunable parameters for the behaviors can be found
 
 To run this code on a remote desktop computer, you must have the following local repositories cloned in the same parent directory (e.g., `~/repos/`):
 
-1.  **`stretch4_gripper_modeling_and_control`**: Provides the core gripper kinematic models, telemetry utilities, and command scripts.
-2.  **`stretch4_flying_gripper_control`**: (If applicable) Provides the underlying control interfaces for the end-of-arm tooling.
+1.  **`stretch4_compliant_gripper`** [link](https://github.com/hello-robot/stretch4_compliant_gripper): Provides the core gripper kinematic models, telemetry utilities, and command scripts.
+2.  **`stretch4_flying_gripper`** [link](https://github.com/hello-robot/stretch4_flying_gripper/): (If applicable) Provides the underlying control interfaces for the end-of-arm tooling.
 > [!NOTE]
 > **Architecture Note:** Both Molmo 2 and SAM 2.1 are loaded dynamically on the fly using the Hugging Face `transformers` library. You do *not* need to clone their respective repositories or manually download checkpoints.
 
+## Installation on Stretch 4
+
+Install the standard package requirements on the robot as follows; no need for a specific `torch` installation.
+
+### 1. Create a Virtual Environment
+
+Navigate to the `stretch4_grasping_demo` directory and create a new Python virtual environment:
+
+```bash
+cd ~/repos/stretch4_grasping_demo
+python3 -m venv .venv
+source .venv/bin/activate
+```
+
+### 2. Install Standard Dependencies
+
+Install the remaining required packages using the provided `requirements.txt`:
+
+```bash
+pip install -r requirements.txt
+```
+
+### 3. Install Local Repositories
+
+Install the related Stretch 4 packages in editable mode:
+
+```bash
+pip install -e ../stretch4_compliant_gripper/
+```
+
+```bash
+pip install -e ../stretch4_flying_gripper/
+```
+
 ## Installation on Remote Desktop (Ubuntu 24.04 + RTX 5090)
 
-The visual servoing perception system used by `grasping_demo.py` and `recv_and_molmo_sam2_gripper_images.py` requires a powerful GPU. These instructions are tailored for an NVIDIA GeForce RTX 5090 running on Ubuntu 24.04.
+Install both the standard package requirements and the visual servoing perception system packages on your desktop computer. The visual servoing perception system used by `grasping_demo.py` and `recv_and_molmo_sam2_gripper_images.py` requires a powerful GPU. These instructions are tailored for an NVIDIA GeForce RTX 5090 running on Ubuntu 24.04.
 
 ### 1. Create a Virtual Environment
 
@@ -39,14 +73,14 @@ source .venv/bin/activate
 
 ### 2. Install PyTorch (CUDA 12.8)
 
-The RTX 5090 (Blackwell architecture) requires at least CUDA 12.8. You must install a PyTorch nightly build to support this architecture natively. Ensure your `.venv` is activated, then run:
+The RTX 5090 (Blackwell architecture) requires at least CUDA 12.8. Ensure your `.venv` is activated, then run:
 
 ```bash
 # Upgrade pip first
 pip install --upgrade pip
 
 # Install PyTorch with CUDA 12.8 support
-pip install --pre --force-reinstall torch torchvision torchaudio --index-url https://download.pytorch.org/whl/nightly/cu128
+pip install --pre --force-reinstall torch torchvision torchaudio
 ```
 
 *(Note: Once a stable release of PyTorch with built-in cu128 or higher support becomes available, you can replace this with the standard stable installation command.)*
@@ -64,11 +98,11 @@ pip install -r requirements.txt
 Install the related Stretch 4 packages in editable mode:
 
 ```bash
-pip install -e ../stretch4_gripper_modeling_and_control/
+pip install -e ../stretch4_compliant_gripper/
 ```
 
 ```bash
-pip install -e ../stretch4_flying_gripper_control/
+pip install -e ../stretch4_flying_gripper/
 ```
 
 
@@ -80,11 +114,11 @@ This grasping demo relies on a high-bandwidth, low-latency connection between th
 
 After you have ensured that the robot and the remote computer are connected and able to communicate with each other, you can proceed to edit the IP addresses in `gripper_networking.py` to match the robot's IP address and the remote computer's IP address. 
 
-This file should be edited on both the robot and the remote computer. The file is in the `src/stretch4_gripper_modeling_and_control/` directory of the stretch4_gripper_modeling_and_control repository.
+This file should be edited on both the robot and the remote computer. The file is in the `src/stretch4_compliant_gripper/` directory of the stretch4_compliant_gripper repository.
 
 You can see the file on GitHub via the following link: 
 
-[stretch4_gripper_modeling_and_control/gripper_networking.py](https://github.com/hello-robot/stretch4_gripper_modeling_and_control/blob/main/src/stretch4_gripper_modeling_and_control/gripper_networking.py)
+[stretch4_compliant_gripper/src/stretch4_gripper_modeling_and_control/gripper_networking.py](https://github.com/hello-robot/stretch4_compliant_gripper/blob/main/src/stretch4_gripper_modeling_and_control/gripper_networking.py)
 
 The two variable to change are at the top of the file, as shown in the following excerpt:
 
@@ -101,7 +135,7 @@ Once networking is configured, you can proceed to copy the gripper calibration f
 On your remote computer, run the following script to copy the gripper calibration files from the robot to the desktop:
 
 ```bash
-python3 ../stretch4_gripper_modeling_and_control/sync_calibration_models.py
+python3 ../stretch4_compliant_gripper/sync_calibration_models.py
 ```
 
 This tool automatically connects to the robot using the IP specified in `gripper_networking.py`, downloads the calibration files in a single `scp` command (minimizing password prompts), and extracts the correct `HELLO_FLEET_ID` directly from the downloaded data. It then automatically organizes the models into your desktop's local `~/stretch_user/<robot_id>/calibration_gripper` directory, keeping both machines in sync without requiring you to manually specify the robot's ID.
@@ -109,7 +143,7 @@ This tool automatically connects to the robot using the IP specified in `gripper
 
 ### Start Robot-Side Services
 
-On the Stretch robot (in the `stretch4_gripper_modeling_and_control` repository directory), open two separate terminals and run:
+On the Stretch robot (in the `stretch4_compliant_gripper` repository directory), open two separate terminals and run:
 
 **Terminal 1 (Receive Commands):**
 ```bash
@@ -172,6 +206,6 @@ python3 grasping_demo.py --remote OBJECT_DESCRIPTION
 To test the gripper control manually, you can plug a gamepad dongle into the desktop and run the `send_gripper_commands.py` script from the installed model repository:
 
 ```bash
-cd ../stretch4_gripper_modeling_and_control
+cd ../stretch4_compliant_gripper
 python3 send_gripper_commands.py --remote
 ```
