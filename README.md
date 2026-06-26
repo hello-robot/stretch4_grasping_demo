@@ -14,12 +14,16 @@ The FSM behaviors use three control modes provided by [flying gripper control](h
 
 More details about the FSM and tunable parameters for the behaviors can be found in [visual_servo_fsm_params.py](visual_servo_fsm_params.py).
 
-## Prerequisites
+## Installation
 
-To run this code on a remote desktop computer, you must have the following local repositories cloned in the same parent directory (e.g., `~/repos/`):
+### Other Dependencies
 
-1.  **`stretch4_compliant_gripper`** [link](https://github.com/hello-robot/stretch4_compliant_gripper): Provides the core gripper kinematic models, telemetry utilities, and command scripts.
-2.  **`stretch4_flying_gripper`** [link](https://github.com/hello-robot/stretch4_flying_gripper/): (If applicable) Provides the underlying control interfaces for the end-of-arm tooling.
+Please clone and install the following dependencies in the virtual environment associated with this package:
+
+- `stretch4_flying_gripper`: https://github.com/hello-robot/stretch4_flying_gripper
+- `stretch4_compliant_gripper`: https://github.com/hello-robot/stretch4_compliant_gripper
+
+
 > [!NOTE]
 > **Architecture Note:** Both Molmo 2 and SAM 2.1 are loaded dynamically on the fly using the Hugging Face `transformers` library. You do *not* need to clone their respective repositories or manually download checkpoints.
 
