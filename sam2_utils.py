@@ -142,8 +142,32 @@ class SAM2Tracker:
                     )
                     self.last_mask = (masks[0][0] > 0.0).cpu().numpy().squeeze()
                     break
+                generator.close()  # Force generator cleanup
                     
             if np.sum(self.last_mask) < 20:
                 target_lost = True
+
+            # Prune video inference session history to prevent memory leak
+            session = self.video_inference_session
+            history_limit = 32
+            
+            # Keep keys in processed_frames to preserve session.num_frames / dictionary length,
+            # but replace old heavy frame tensors with None to free GPU memory.
+            if session.processed_frames:
+                for k in list(session.processed_frames.keys()):
+                    if k < self.video_frame_idx:
+                        session.processed_frames[k] = None
+                
+            # Keep only the last 16 frames of outputs/histories
+            for obj_idx in list(session.output_dict_per_obj.keys()):
+                non_cond = session.output_dict_per_obj[obj_idx]["non_cond_frame_outputs"]
+                keys_to_delete = [k for k in non_cond.keys() if k < self.video_frame_idx - history_limit]
+                for k in keys_to_delete:
+                    non_cond.pop(k, None)
+                    
+                tracked = session.frames_tracked_per_obj[obj_idx]
+                keys_to_delete = [k for k in tracked.keys() if k < self.video_frame_idx - history_limit]
+                for k in keys_to_delete:
+                    tracked.pop(k, None)
 
         return self.last_mask, target_lost
