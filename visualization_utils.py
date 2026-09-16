@@ -86,7 +86,7 @@ def draw_target_grasp(image, grasp_target, camera_info):
     if grasp_target is None or camera_info is None:
         return image
         
-    from stretch4_gripper_modeling_and_control import gripper_camera as gc
+    from stretch4_gripper_model import gripper_camera as gc
     
     # Project 3D contacts to 2D
     pt1_2d = gc.pixel_from_3d(grasp_target.left_contact_3d, camera_info)

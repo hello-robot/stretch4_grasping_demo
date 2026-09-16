@@ -4,7 +4,7 @@ import numpy as np
 import visual_servo_fsm_params as vp
 from perception_utils import compute_look_at_rot_velocities, get_median_object_depth
 from perception_utils import compute_3d_look_at_rot_velocities, compute_3d_align_rot_velocities
-from stretch4_gripper_modeling_and_control import gripper_camera as gc
+from stretch4_gripper_model import gripper_camera as gc
 import sys
 
 class State(Enum):

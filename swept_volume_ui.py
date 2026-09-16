@@ -1,8 +1,8 @@
 import cv2
 import numpy as np
-from stretch4_gripper_modeling_and_control import aruco_to_fingertips as af
-from stretch4_gripper_modeling_and_control import gripper_camera as gc
-from stretch4_gripper_modeling_and_control.swept_volume_model import SweptVolumeModel
+from stretch4_gripper_model import aruco_to_fingertips as af
+from stretch4_gripper_model import gripper_camera as gc
+from stretch4_gripper_model.swept_volume_model import SweptVolumeModel
 
 class SweptVolumeProcessor:
     def __init__(self, visualizer, args):

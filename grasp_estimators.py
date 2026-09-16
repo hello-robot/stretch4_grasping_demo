@@ -1,6 +1,6 @@
 import numpy as np
 import cv2
-from stretch4_gripper_modeling_and_control import gripper_camera as gc
+from stretch4_gripper_model import gripper_camera as gc
 import visual_servo_fsm_params as vp
 
 class GraspTarget:

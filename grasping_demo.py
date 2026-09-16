@@ -11,23 +11,23 @@ import numpy as np
 import vlm_utils as vlm
 import sam2_utils as sam2
 import visualization_utils as vu
-from stretch4_gripper_modeling_and_control.visualization_utils import draw_predicted_frames
+from stretch4_gripper_model.visualization_utils import draw_predicted_frames
 import visual_servo_fsm_params as vp
 import shared_arguments
-from stretch4_gripper_modeling_and_control import telemetry_utils as tu
+from stretch4_gripper_model import telemetry_utils as tu
 from visual_servo_fsm import VisualServoFSM, State
-from stretch4_gripper_modeling_and_control.swept_volume_model import SweptVolumeModel
+from stretch4_gripper_model.swept_volume_model import SweptVolumeModel
 
 try:
-    from stretch4_gripper_modeling_and_control import gripper_networking as gn
+    from stretch4_gripper_model import gripper_networking as gn
 except ImportError:
     pass
 
-from stretch4_gripper_modeling_and_control.fingertip_visualizer import FingertipVisualizer
+from stretch4_gripper_model.fingertip_visualizer import FingertipVisualizer
 
-from stretch4_gripper_modeling_and_control.fingertip_detector import add_fingertip_detector_args, process_fingertip_detector_args
-from stretch4_gripper_modeling_and_control import gripper_camera as gc
-from stretch4_gripper_modeling_and_control import aruco_to_fingertips as af
+from stretch4_gripper_model.fingertip_detector import add_fingertip_detector_args, process_fingertip_detector_args
+from stretch4_gripper_model import gripper_camera as gc
+from stretch4_gripper_model import aruco_to_fingertips as af
 
 # New Architected Components
 from fingertip_pose_estimator import FingertipPoseEstimator, FingertipEstimationMethod

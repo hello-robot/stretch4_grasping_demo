@@ -1,6 +1,6 @@
 import numpy as np
 from enum import Enum
-from stretch4_gripper_modeling_and_control import gripper_camera as gc
+from stretch4_gripper_model import gripper_camera as gc
 
 class FingertipEstimationMethod(Enum):
     VISUAL_BOTH = 1

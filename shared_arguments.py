@@ -26,7 +26,7 @@ def resolve_model_path(args, robot_id):
 
     if getattr(args, 'model', None) is None:
         try:
-            from stretch4_gripper_modeling_and_control import calibration_utils as cu
+            from stretch4_gripper_model import calibration_utils as cu
             args.model = cu.get_default_model_path()
             if args.model:
                 print(f"No model path provided. Defaulting to fleet calibration: {args.model}")

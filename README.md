@@ -122,7 +122,7 @@ This file should be edited on both the robot and the remote computer. The file i
 
 You can see the file on GitHub via the following link: 
 
-[stretch4_compliant_gripper/src/stretch4_gripper_modeling_and_control/gripper_networking.py](https://github.com/hello-robot/stretch4_compliant_gripper/blob/main/src/stretch4_gripper_modeling_and_control/gripper_networking.py)
+[stretch4_compliant_gripper/src/stretch4_gripper_model/gripper_networking.py](https://github.com/hello-robot/stretch4_compliant_gripper/blob/main/src/stretch4_gripper_model/gripper_networking.py)
 
 The two variable to change are at the top of the file, as shown in the following excerpt:
 

@@ -15,17 +15,17 @@ import textwrap
 
 # Ensure to load local gripper networking file
 try:
-    from stretch4_gripper_modeling_and_control import gripper_networking as gn
+    from stretch4_gripper_model import gripper_networking as gn
     import visualization_utils as vu
 except ImportError:
     pass # Assume gripper_networking is correctly provided in environment
 
 import shared_arguments
 
-from stretch4_gripper_modeling_and_control import telemetry_utils as tu
-from stretch4_gripper_modeling_and_control.fingertip_visualizer import FingertipVisualizer
-from stretch4_gripper_modeling_and_control.visualization_utils import draw_predicted_frames
-from stretch4_gripper_modeling_and_control import aruco_to_fingertips as af
+from stretch4_gripper_model import telemetry_utils as tu
+from stretch4_gripper_model.fingertip_visualizer import FingertipVisualizer
+from stretch4_gripper_model.visualization_utils import draw_predicted_frames
+from stretch4_gripper_model import aruco_to_fingertips as af
 
 def extract_points(text, width, height):
     """
